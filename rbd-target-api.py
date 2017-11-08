@@ -543,11 +543,19 @@ def _gateway(gateway_name=None):
 def get_disks():
     """
     Show the rbd disks defined to the gateways
+    :param detail: (str) 'yes' to list details of all disks, default is 'no'
     **RESTRICTED**
+    Examples:
+    curl --insecure --user admin:admin -d detail=yes -X GET https://192.168.122.69:5001/api/disks
     """
 
-    disk_names = config.config['disks'].keys()
-    response = {"disks": disk_names}
+    detail = request.form.get('detail', 'no')
+    if detail.lower() == "yes":
+        disk_names = config.config['disks']
+        response = {"disks": disk_names}
+    else:
+        disk_names = config.config['disks'].keys()
+        response = {"disks": disk_names}
 
     return jsonify(response), 200
 
