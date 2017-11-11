@@ -800,13 +800,19 @@ def get_clients():
     List clients defined to the configuration.
     This information will include auth information, hence the
     restricted_auth wrapper
+    :param detail: (str) 'yes' to list details of all clients, default is 'no'
     **RESTRICTED**
     Examples:
-    curl --insecure --user admin:admin -X GET https://192.168.122.69:5001/api/clients
+    curl --insecure --user admin:admin -d detail='yes' -X GET https://192.168.122.69:5001/api/clients
     """
 
-    client_list = config.config['clients'].keys()
-    response = {"clients": client_list}
+    detail = request.form.get('detail', 'no')
+    if detail.lower() == "yes":
+        client_list = config.config['clients']
+        response = {"clients": client_list}
+    else:
+        client_list = config.config['clients'].keys()
+        response = {"clients": client_list}
 
     return jsonify(response), 200
 
