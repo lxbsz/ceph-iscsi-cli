@@ -148,14 +148,14 @@ def valid_gateway(gw_name, gw_ip, config):
                               api.response.status_code))
 
     # compare the hash of the new gateways conf file with the local one
-    local_hash = gen_file_hash('/etc/ceph/iscsi-gateway.cfg')
+    local_hash = gen_file_hash('/var/lib/ceph/etc/ceph/iscsi-gateway.cfg')
     try:
         remote_hash = str(api.response.json()['data'])
     except:
         remote_hash = None
 
     if local_hash != remote_hash:
-        return ("/etc/ceph/iscsi-gateway.cfg on {} does "
+        return ("/var/lib/ceph/etc/ceph/iscsi-gateway.cfg on {} does "
                 "not match the local version. Correct and "
                 "retry request".format(gw_name))
 
