@@ -159,7 +159,7 @@ def get_sys_info(query_type=None):
 
     elif query_type == 'checkconf':
 
-        local_hash = gen_file_hash('/etc/ceph/iscsi-gateway.cfg')
+        local_hash = gen_file_hash('/var/lib/ceph/etc/ceph/iscsi-gateway.cfg')
         return jsonify(data=local_hash), 200
 
     elif query_type == 'checkversions':
@@ -1479,6 +1479,7 @@ def pre_reqs_errors():
     k_rel = '695.el7'
 
     errors_found = []
+    return errors_found
 
     dist, rel, dist_id = platform.linux_distribution(full_distribution_name=0)
 
@@ -1567,8 +1568,8 @@ class ConfigWatcher(threading.Thread):
 
 def get_ssl_context():
     # Use these self-signed crt and key files
-    cert_files = ['/etc/ceph/iscsi-gateway.crt',
-                  '/etc/ceph/iscsi-gateway.key']
+    cert_files = ['/var/lib/ceph/etc/ceph/iscsi-gateway.crt',
+                  '/var/lib/ceph/etc/ceph/iscsi-gateway.key']
 
     if not all([os.path.exists(crt_file) for crt_file in cert_files]):
         return None

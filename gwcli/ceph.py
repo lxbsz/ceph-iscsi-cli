@@ -30,7 +30,7 @@ class CephGroup(UIGroup):
                  '''
 
 
-    ceph_config_dir = '/etc/ceph'
+    ceph_config_dir = '/var/lib/ceph/etc/ceph'
     default_ceph_conf = '{}/ceph.conf'.format(ceph_config_dir)
 
     def __init__(self, parent):
@@ -60,7 +60,7 @@ class CephGroup(UIGroup):
 
     def get_clusters(self):
         """
-        Look at the /etc/ceph dir to generate a dict of clusters that are
+        Look at the /var/lib/ceph/etc/ceph dir to generate a dict of clusters that are
         defined/known to the gateway
         :return: (dict) ceph_name -> conf_file, keyring
         """
@@ -188,7 +188,7 @@ class CephCluster(UIGroup):
     @property
     def cluster_version(self):
 
-        vers_out = os_cmd("ceph -c {} version".format(self.conf))
+        vers_out = os_cmd("/var/lib/ceph/bin/ceph -c {} version".format(self.conf))
 
         # RHEL packages include additional info, that we don't need
         version_str = vers_out.split()[2]
